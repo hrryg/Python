@@ -2,7 +2,7 @@ import discord
 import sqlite3
 import random
 import time
-TOKEN = 'NjcwMjEwOTA3MjI5NjUwOTU1.XirFOQ.6drgY_6O9Gs18-7kgfpz98OLd3Q'
+TOKEN = 'NjcwMjEwOTA3MjI5NjUwOTU1.XisTjA.D5FacukmQ1SBvntnKjwAaweBhJ4'
 client = discord.Client()
 
 @client.event
@@ -47,7 +47,6 @@ async def on_message(message):
                 await message.channel.send('追加するお題を入力してください。')
             else:
                 odai = msg[2]
-                print(odai)
                 await message.channel.send('お題**『%s』**を追加しました。' % odai)
                 c.execute('select count(id) from IG')
                 cnt = c.fetchall()[0][0]
@@ -87,8 +86,5 @@ async def on_message(message):
             for x in range(page,cnt):
                 c.execute('update IG set id = (?) where id = (?)',(str(x-1),str(x)))
             conn.commit()
-
-
-
 
 client.run(TOKEN)
