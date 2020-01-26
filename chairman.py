@@ -2,7 +2,7 @@ import discord
 import sqlite3
 import random
 import time
-TOKEN = 'NjcwMjEwOTA3MjI5NjUwOTU1.XisV-A.--pz2ErI7KmSKQIIvkASa9CVPyA'
+TOKEN = 'NjcwMjEwOTA3MjI5NjUwOTU1.Xi2XFg.bbTw1CtVzngo5lYExGqIXl4FRZI'
 client = discord.Client()
 
 @client.event
@@ -48,7 +48,7 @@ async def on_message(message):
             await message.channel.send('**IPPON GRANDPRIX**')
         elif msg[1] == 'help':
             h = '**!ippon add <お題>**  お題を追加します。\n'
-            h +='**!ippon start**  大喜利を開始します。\n'
+            h +='**!ippon start**  IPPON GRANDPRIXを開始します。\n'
             h +='**!ippon list <page>**  登録されているお題を10件ずつ表示します。\n'
             h +='**!ippon remove <num>**  指定したお題を削除します。\n'
             h +='**!ippon option**  現在の設定を確認します。\n'
@@ -59,12 +59,17 @@ async def on_message(message):
             if len(msg) < 3:
                 await message.channel.send('追加するお題を入力してください。')
             else:
+                c.execute('select r from option')
+                r = c.fetchall()[0][0]
                 odai = msg[2]
-                await message.channel.send('お題**『%s』**を追加しました。' % odai)
-                c.execute('select count(id) from IG')
-                cnt = c.fetchall()[0][0]
-                c.execute('insert into IG values (?,?)', (cnt,odai))
-                conn.commit()
+                if len(odai) <= r:
+                    await message.channel.send('お題**『%s』**を追加しました。' % odai)
+                    c.execute('select count(id) from IG')
+                    cnt = c.fetchall()[0][0]
+                    c.execute('insert into IG values (?,?)', (cnt,odai))
+                    conn.commit()
+                else:
+                    await message.channel.send('お題は**%d文字**以内で入力してください。' % r)
         elif msg[1] == 'start':
             c.execute('select count(id) from IG')
             cnt = c.fetchall()[0][0]
